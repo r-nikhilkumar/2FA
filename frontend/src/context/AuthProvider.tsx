@@ -2,21 +2,19 @@ import { createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from "universal-cookie";
 
-const AuthContext = createContext({
+const AuthContext : React.Context<any> = createContext({
     loginUser: "",
     logoutUser: "",
     user_id_exists: null,
-}
-);
+})
 
-
-export const AuthProvider = ({children:any}) => {
+export function AuthProvider({ children } : { children: React.ReactNode }){
     const cookies = new Cookies();
     const user_id_exists = cookies.get('user_id') ? true : false;
 
     const navigate = useNavigate();
 
-    const loginUser = async(e) => {
+    const loginUser = async() => {
         navigate('/login');
     }
 

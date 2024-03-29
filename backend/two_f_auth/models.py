@@ -7,6 +7,7 @@ class User(AbstractUser):
  id =          models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False)
  otp_base32 =  models.CharField(max_length = 200, null = True)
  logged_in =   models.BooleanField(default = False)
+ phone_number = models.IntegerField(max_length = 13)
  
  def __str__(self):
   return str(self.username)

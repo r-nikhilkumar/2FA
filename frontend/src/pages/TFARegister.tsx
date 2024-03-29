@@ -1,85 +1,86 @@
-import { React, useState, useEffect, useContext } from 'react';
+import { React, useState, useEffect, useContext } from "react";
 import LoadingScreen from "react-loading-screen";
-import { useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import AuthContext from '../context/AuthContext.ts'
+import { useNavigate } from "react-router-dom";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import AuthContext from "../context/AuthProvider.tsx";
 import Cookies from "universal-cookie";
 
 function TFARegister() {
-	const [qrCodeLink, setQrCodeLink] = useState("");
-	const cookies = new Cookies();
+  const [qrCodeLink, setQrCodeLink] = useState("");
+  const cookies = new Cookies();
 
-	let { user_id_exists, loginUser } = useContext(AuthContext);
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const handleSubmit = async() => {
-    navigate('/login');
-  }
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+    navigate("/login");
+  };
 
-	const getQRCode = async() => {
-		let response = await fetch('http://localhost:8000/set-two-factor-auth/', {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify({ user_id: cookies.get('user_id') }),
-	    });
-	    let responseJson = await response.json();
-	    setQrCodeLink(responseJson.qr_code);
-	    cookies.remove('user_id');
-	}
+  const getQRCode = async () => {
+    let response = await fetch(
+      "http://localhost:8000/api/auth/set-two-factor-auth/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: window.localStorage.getItem("user_id"),
+        }),
+      }
+    );
+    let responseJson = await response.json();
+    setQrCodeLink(responseJson.qr_code);
+    console.log(responseJson.qr_code);
+  };
 
-	useEffect(() => {
-		if(!user_id_exists) {
-      alert("Can't enter this page");
-			navigate('/login');
-		}
-    else {
-      getQRCode();
-    }
-	}, []);
+  useEffect(() => {
+    getQRCode();
+  }, []);
 
-	return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Scan
-          </Typography>
-          <img src={qrCodeLink} />
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+  return (
+    <>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        {qrCodeLink.length === 0 ? (
+          <div>Loading</div>
+        ) : (
+          <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
             >
-              Done
-            </Button>
-          </Box>
-        </Box>
-      </Container>
+              QR Code
+            </div>
+            <img
+              src={qrCodeLink}
+              alt="QR Code"
+              style={{ display: "block", margin: "0 auto" }}
+            />
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}>
+              Complete
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 
 export default TFARegister;
-
-
-

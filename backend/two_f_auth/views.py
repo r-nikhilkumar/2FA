@@ -43,7 +43,7 @@ class LoginView(APIView):
     "message": f"No user with the corresponding username and password exists"
     }, 
     status=status.HTTP_404_NOT_FOUND)
-  return Response({ 'user_id': user.id })
+  return Response({ "status": "Logined In", 'user_id': user.id })
 
 class Verify2FAView(APIView):
  serializer_class = UserSerializer
@@ -59,4 +59,4 @@ class Verify2FAView(APIView):
   if not valid_otp:
    return Response({ "status": "Verification failed", "message": "OTP is invalid or already used" }, 
     status=status.HTTP_400_BAD_REQUEST)
-  return Response({ 'otp_verified': True })
+  return Response({ "status": "Verified", 'otp_verified': "true" })

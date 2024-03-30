@@ -1,5 +1,9 @@
 from .models import User
+import random
 import requests, pyotp
+from backend.settings import SMS_API, EMAIL_HOST_USER
+from django.core.mail import send_mail
+
 
 def getUserService(request):
  """
@@ -51,3 +55,42 @@ def getOTPValidityService(user, otp):
  user.logged_in = True
  user.save()
  return True
+
+def getUserServiceForSMS(request):
+  try:
+    data = request.data
+    user_id = data.get('user_id', None)
+    user = User.objects.get(id = user_id)
+    if len(str(user.phone_number))<10:
+      return "invalid phone number"
+    return user
+  except:
+    return None
+def getUserServiceForSMS(request):
+  try:
+    data = request.data
+    user_id = data.get('user_id', None)
+    user = User.objects.get(id = user_id)
+    if len(user.email)<10:
+      return "invalid email"
+    return user
+  except:
+    return None
+  
+def sendOTP(phone_number):
+  try:
+    otp_value = random.randint(100000, 999999)
+    url = f'https://2factor.in/API/V1/{SMS_API}/SMS/{phone_number}/{otp_value}'
+    response = requests.get(url)
+    return otp_value
+  except Exception as e:
+    return e
+  
+def sendOTPmail(email):
+  try:
+    otp_value = random.randint(100000, 999999)
+    send_mail("2FA OTP",f"Your OTP for 2 factor authentication: {otp_value}", EMAIL_HOST_USER, [email], fail_silently=False)
+    return otp_value
+  except Exception as e:
+    return e
+  

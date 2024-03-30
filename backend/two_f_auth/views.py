@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions, status
-from .services import getQRCodeService, getUserService, getLoginUserService, getOTPValidityService
+from rest_framework.decorators import api_view
+from .services import getQRCodeService, getUserService, getLoginUserService, getOTPValidityService, getUserServiceForSMS, sendOTP, sendOTPmail
 # from django.contrib.auth.models import User
 from .models import User
 from two_f_auth.serializer import UserSerializer
@@ -60,3 +61,57 @@ class Verify2FAView(APIView):
    return Response({ "status": "Verification failed", "message": "OTP is invalid or already used" }, 
     status=status.HTTP_400_BAD_REQUEST)
   return Response({ "status": "Verified", 'otp_verified': "true" })
+
+class Fetchphone(APIView):
+  def post(self, request):
+    user = getUserServiceForSMS(request)
+    if user == None:
+      return Response({ "status": "Verification failed", "message": f"No user with the corresponding username and password exists"}, 
+      status=status.HTTP_404_NOT_FOUND)
+    if user == "invalid phone number":
+      return Response({ "status": "phone not found", "message" : "Register your phone number first!"})
+    return Response({"status":"ok","user_phone":user.phone_number})
+
+class Fetchmail(APIView):
+  def post(self, request):
+    user = getUserServiceForSMS(request)
+    if user == None:
+      return Response({ "status": "Verification failed", "message": f"No user with the corresponding username and password exists"}, 
+      status=status.HTTP_404_NOT_FOUND)
+    if user == "invalid email":
+      return Response({ "status": "email not found", "message" : "Register your email first!"})
+    return Response({"status":"ok","mail":user.email})
+
+class SendOTP(APIView):
+  def post(self, request):
+    user = getUserService(request)
+    if user == None:
+      return Response({ "status": "Verification failed", "message": f"No user with the corresponding username and password exists"}, 
+      status=status.HTTP_404_NOT_FOUND)
+    otp = sendOTP(user.phone_number)
+    print(otp)
+    user.sms_otp = otp
+    user.save()
+    return Response({"status":"ok", "message":"otp sent"})
+  
+class SendOTPMail(APIView):
+  def post(self, request):
+    user = getUserService(request)
+    if user == None:
+      return Response({ "status": "Verification failed", "message": f"No user with the corresponding username and password exists"}, 
+      status=status.HTTP_404_NOT_FOUND)
+    otp = sendOTPmail(user.email)
+    user.sms_otp = otp
+    user.save()
+    return Response({"status":"ok", "message":"otp sent"})
+
+class VerifySMSOTP(APIView):
+  def post(self, request):
+    user = getUserService(request)
+    if user == None:
+      return Response({ "status": "Verification failed", "message": f"No user with the corresponding username and password exists"}, 
+      status=status.HTTP_404_NOT_FOUND)
+    if(str(user.sms_otp) == request.data['otp']):
+      return Response({"status":"ok"})
+    return Response({"status":"verification failed","message":"Invalid OTP"})
+    

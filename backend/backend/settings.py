@@ -127,3 +127,11 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = 'two_f_auth.User'
 CORS_ALLOW_ALL_ORIGINS = True
+SMS_API = "a31892af-edc9-11ee-8cbb-0200cd936042"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Replace with your preferred backend
+EMAIL_HOST = 'smtp.gmail.com'  # Replace with your email host
+EMAIL_PORT = 587  # Replace with your email port
+EMAIL_USE_TLS = True  # Set to False if your email server doesn't use TLS
+EMAIL_HOST_USER = 'thenikhilkumar1@gmail.com'  # Replace with your email username
+EMAIL_HOST_PASSWORD = 'fxid nykq zeiq bfhh'  # Replace with your email password

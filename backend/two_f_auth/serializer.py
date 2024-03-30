@@ -8,4 +8,4 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'logged_in', 'otp_base32', 'phone_number']
+        fields = ['id', 'username', 'password', 'logged_in', 'otp_base32', 'phone_number', 'sms_otp','email']

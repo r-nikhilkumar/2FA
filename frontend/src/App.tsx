@@ -6,6 +6,8 @@ import { AuthProvider } from './context/AuthProvider'
 import Login from './pages/Login.tsx'
 import TFAVerify from './pages/TFAVerify.tsx'
 import Welcome from './pages/Welcome.tsx'
+import SMSVerify from './pages/SMSVerify.tsx'
+import MailVerify from './pages/MailVerify.tsx'
 
 export default function App() {
   return (
@@ -16,6 +18,8 @@ export default function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/two-fa-verify-page' element={<TFAVerify/>}/>
         <Route path='/welcome' element={<Welcome/>}/>
+        <Route path='/verify-with-sms' element={<SMSVerify/>}/>
+        <Route path='/verify-with-mail' element={<MailVerify/>}/>
       </Routes>
     </BrowserRouter>
   )

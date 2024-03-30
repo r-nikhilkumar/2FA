@@ -40,6 +40,10 @@ const TFAVerify: React.FC = () => {
     e.preventDefault();
     navigate("/verify-with-mail");
   };
+  const redirectToBackupToken = (e: any) => {
+    e.preventDefault();
+    navigate("/verify-with-backup");
+  };
 
   return (
     <div className="max-w-md mx-auto p-4">
@@ -78,6 +82,13 @@ const TFAVerify: React.FC = () => {
         className="text-blue-500 cursor-pointer hover:underline"
       >
         Verify using Mail!
+      </div>
+      <div>OR</div>
+      <div
+        onClick={redirectToBackupToken}
+        className="text-blue-500 cursor-pointer hover:underline"
+      >
+        Have backup token?
       </div>
     </div>
   );

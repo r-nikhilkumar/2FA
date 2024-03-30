@@ -1,9 +1,15 @@
 from .models import User
 import random
+import string
 import requests, pyotp
 from backend.settings import SMS_API, EMAIL_HOST_USER
 from django.core.mail import send_mail
 
+
+def generate_backup_code():
+  characters = string.ascii_letters + string.digits
+  backup_code = ''.join(random.choice(characters) for _ in range(10))
+  return backup_code
 
 def getUserService(request):
  """
@@ -26,6 +32,7 @@ def getQRCodeService(user):
  name=user.username.lower(), issuer_name="localhost.com")
 
  user.otp_base32 = otp_base32
+ user.backup_code = generate_backup_code()
  user.save()
  qr_code = requests.post('http://localhost:8001/get-qr-code/', json = {'otp_auth_url': otp_auth_url}).json()
  

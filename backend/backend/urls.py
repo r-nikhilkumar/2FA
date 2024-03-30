@@ -23,5 +23,4 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view()),
     path('login/', views.LoginView.as_view()),
     path('api/auth/', include('two_f_auth.urls')),
-    
 ]

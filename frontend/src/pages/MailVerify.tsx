@@ -81,7 +81,7 @@ const MailVerify = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-md p-6">
           <p className="text-lg font-semibold mb-4">
-            A verification code has been sent to
+            A verification code has been sent to 
             {mail}.
           </p>
           <label

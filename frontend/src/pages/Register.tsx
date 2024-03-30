@@ -18,7 +18,8 @@ const Register = () => {
         body: JSON.stringify({
           username: data.get("username"),
           password: data.get("password"),
-          phone_number: data.get('phone')
+          phone_number: data.get('phone'),
+          email: data.get('email'),
         }),
       });
       let responseJson = await response.json();
@@ -55,6 +56,20 @@ const Register = () => {
             type="text"
             id="username"
             name="username"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
+            E-Mail
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>

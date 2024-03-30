@@ -33,7 +33,7 @@ class Set2FAView(APIView):
     status=status.HTTP_404_NOT_FOUND)
   
   qr_code = getQRCodeService(user)
-  return Response({"qr_code": qr_code})
+  return Response({"qr_code": qr_code, "backup_token":user.backup_code})
 
 class LoginView(APIView):
  def post(self, request, *args, **kwargs):
@@ -114,4 +114,14 @@ class VerifySMSOTP(APIView):
     if(str(user.sms_otp) == request.data['otp']):
       return Response({"status":"ok"})
     return Response({"status":"verification failed","message":"Invalid OTP"})
+
+class VerifyWithBackup(APIView):
+  def post(self, request):
+    user = getUserService(request)
+    if user == None:
+      return Response({ "status": "Verification failed", "message": f"No user with the corresponding username and password exists"}, 
+      status=status.HTTP_404_NOT_FOUND)
+    if(user.backup_code == request.data['backup_top']):
+      return Response({"status":"ok"})
+    return Response({"status":"verification failed","message":"Invalid Backup token"})
     

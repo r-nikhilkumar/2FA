@@ -10,6 +10,7 @@ class User(AbstractUser):
  phone_number = models.IntegerField(max_length = 13, null = True)
  email = models.EmailField(max_length=200)
  sms_otp = models.IntegerField(max_length = 6, null = True, blank=True)
+ backup_code = models.CharField(max_length = 20, null = True, blank = True)
  
  def __str__(self):
   return str(self.username)

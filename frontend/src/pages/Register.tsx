@@ -56,6 +56,7 @@ const Register = () => {
             type="text"
             id="username"
             name="username"
+            placeholder="username"
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -70,6 +71,7 @@ const Register = () => {
             type="email"
             id="email"
             name="email"
+            placeholder="example@gmail.com"
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>
@@ -84,7 +86,7 @@ const Register = () => {
             id="phone"
             name="phone"
             type="tel"
-            placeholder="Enter your phone number"
+            placeholder="09999999999/+919999999999"
             className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
@@ -99,6 +101,7 @@ const Register = () => {
             type="password"
             id="password"
             name="password"
+            placeholder="Password"
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
         </div>

@@ -8,6 +8,7 @@ urlpatterns = [
     path('smsverify/', views.Fetchphone.as_view()),
     path('mailverify/', views.Fetchmail.as_view()),
     path('send-mail-otp/', views.SendOTPMail.as_view()),
+    path('send-sms-otp/', views.SendOTP.as_view()),
     path('verify-sms-otp/', views.VerifySMSOTP.as_view()),
     path('verify-with-backup/', views.VerifyWithBackup.as_view()),
 ]
